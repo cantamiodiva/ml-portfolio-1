@@ -42,3 +42,17 @@ pricey_shoes = orders.groupby('shoe_type').price.max().reset_index()
 cheap_shoes = orders.groupby('shoe_color').price.apply(lambda row: np.percentile(row,25)).reset_index()
 shoe_counts = orders.groupby(['shoe_type','shoe_color']).id.count().reset_index()
 shoe_counts_pivot = shoe_counts.pivot(columns='shoe_color',index='shoe_type',values='id').reset_index()
+
+# dataframe merge
+# inner merge (merge on columns with same name, only keep values that are matching between tables)
+sales_vs_targets= pd.merge(sales,targets)
+all_data = sales.merge(targets).merge(men_women)
+orders_products = orders.merge(products.rename(columns={'id':'product_id'}))
+orders_products = pd.merge(orders,products,left_on='product_id',right_on='id', suffixes=['_orders','_products'])
+#outer merge (merge on columns with same name, keep every value and fill with NaN or none for missing values)
+store_a_b_outer = pd.merge(store_a,store_b,how="outer")
+# left/right merge (merge on columns with same name, keep every value from left/right table and add values from right/left table or none/NaN)
+store_a_b_left = pd.merge(store_a,store_b,how="left")
+
+#concatenate frame
+menu = pd.concat([bakery,ice_cream])
