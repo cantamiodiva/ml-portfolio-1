@@ -133,3 +133,15 @@ cov_mat_price_sqfeet = np.cov(housing.price, housing.sqfeet)
 # Pearson correlation
 from scipy.stats import pearsonr
 corr_price_sqfeet, p = pearsonr(housing.price, housing.sqfeet)
+
+# Two variables association
+influence_leader_freq = pd.crosstab(npi.influence, npi.leader)
+# frequency
+influence_leader_freq = pd.crosstab(npi.influence, npi.leader)
+influence_leader_prop = influence_leader_freq/len(npi)
+# marginals
+leader_marginals = influence_leader_prop.sum(axis=0)
+influence_marginals =  influence_leader_prop.sum(axis=1)
+# chi2_contingency = expected frequency if there were no association
+from scipy.stats import chi2_contingency
+chi2, pval, dof, expected = chi2_contingency(influence_leader_freq)
